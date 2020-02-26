@@ -1,0 +1,69 @@
+spring:
+  profiles:
+    active: service # 기본 환경 선택
+
+debug: false
+
+# local 환경
+---
+spring:
+  profiles: local
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+  h2:
+    console:
+      enabled: false
+
+
+
+#서비스
+---
+spring:
+  profiles: service
+
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+      format_sql: true
+      use_sql_comments: true
+      new_generator_mappings: false
+      enable_lazy_load_no_trans: true
+      # naming: //--> 뭐야.. 무용지물이여...
+      #   implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+      #   physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+
+  datasource:
+
+    shopsmart-suport:
+
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://shopsmart.cluster-cveskpxitnmv.ap-northeast-2.rds.amazonaws.com:3306/shopsmart_support?zeroDateTimeBehavior=convertToNull
+      username: shopsmart_dbu
+      password: tiqtmakxm0328
+      #hikariCP 설정인데.. 여기다 하니 되네...
+      connection-timeout: 20000
+      minimum-idle: 1
+      maximum-pool-size: 2
+      idle-timeout: 300000
+      max-lifetime: 1200000
+
+
+    shopsmart-new:
+
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://shopsmart.cluster-cveskpxitnmv.ap-northeast-2.rds.amazonaws.com:3306/shopsmart-new?zeroDateTimeBehavior=convertToNull
+      username: shopsmart_dbu
+      password: tiqtmakxm0328
+      #hikariCP 설정인데.. 여기다 하니 되네...
+      connection-timeout: 20000
+      minimum-idle: 1
+      maximum-pool-size: 2
+      idle-timeout: 300000
+      max-lifetime: 1200000

@@ -1,0 +1,102 @@
+<!-- DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+</head>
+
+<body>
+<h1>메인 페이지</h1>
+<hr>
+
+<a sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+<a sec:authorize="isAnonymous()" th:href="@{/user/signup}">회원가입</a>
+<a sec:authorize="hasRole('ROLE_MEMBER')" th:href="@{/user/info}">내정보</a>
+<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">어드민</a>
+
+</body>
+</html -->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+
+    <!-- 권한이 없다면 꺼져 -->
+    <script sec:authorize="isAnonymous()">window.location.href="account/login";</script>
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="${title}"></title>
+    <meta name="description" content="">
+    <meta name="author" content="Walking Pixels | www.walkingpixels.com">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- FullCalendar Styles -->
+    <link rel='stylesheet' type='text/css' href='/css/plugins/fullcalendar/fullcalendar.css'>
+
+    <!-- PrettyCheckable Styles -->
+    <link rel='stylesheet' type='text/css' href='/css/plugins/prettycheckable/prettyCheckable.css'>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/sangoma-blue.css">
+
+    <!-- JS Libs -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/libs/jquery.js"><\/script>')</script>
+    <script src="/js/libs/modernizr.js"></script>
+
+    <!-- IE8 support of media queries and CSS 2/3 selectors -->
+    <!--[if lt IE 9]>
+    <script src="/js/libs/respond.min.js"></script>
+    <script src="/js/libs/selectivizr.js"></script>
+    <![endif]-->
+
+    <script>
+        $(document).ready(function(){
+
+            // Tooltips
+            $('[title]').tooltip();
+
+            // Tabs
+            $('.demoTabs a, .demoTabs2 a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+                $('.fullcalendar, .full-calendar-gcal').fullCalendar('render'); // Refresh jQuery FullCalendar for hidden tabs
+            })
+
+        });
+    </script>
+
+</head>
+<body>
+
+<!-- Full height wrapper -->
+<div id="wrapper">
+
+    <!-- Main page header -->
+    <header th:replace="header"></header>
+    <!-- /Main page header -->
+
+    <!-- Main page container -->
+    <section th:replace="dashboard_sample" class="container" role="main">
+
+    <!-- 내용 넣읍시다. -->
+
+    </section>
+    <!-- /Main page container -->
+
+</div>
+<!-- /Full height wrapper -->
+
+<!-- Main page footer -->
+<footer id="footer" th:replace="footer"></footer>
+<!-- /Main page footer -->
+
+<!-- Bootstrap scripts -->
+<script src="js/bootstrap/bootstrap.min.js"></script>
+
+</body>
+</html>

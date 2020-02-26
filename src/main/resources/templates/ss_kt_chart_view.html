@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ko" xmlns:th="http://www.springframework.org/schema/security"
+      xmlns:if="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="${title}"></title>
+    <meta name="description" content="">
+    <meta name="author" content="Walking Pixels | www.walkingpixels.com">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- DataTables -->
+    <!-- This is optional and not required, uncommnet if need advanced dataTables functions -->
+    <!--<link rel="stylesheet" href="/css/plugins/datatables/jquery.dataTables.css"> -->
+
+    <!-- PrettyCheckable Styles -->
+    <link rel='stylesheet' type='text/css' href='/css/plugins/prettycheckable/prettyCheckable.css'>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/sangoma-blue.css">
+
+    <!-- Styles :: kevin -->
+    <link rel="stylesheet" href="/css/kevin/form_common.css">
+
+    <!-- JS Libs -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/libs/jquery.js"><\/script>')</script>
+    <script src="/js/libs/modernizr.js"></script>
+
+    <!-- IE8 support of media queries and CSS 2/3 selectors -->
+    <!--[if lt IE 9]>
+    <script src="/js/libs/respond.min.js"></script>
+    <script src="/js/libs/selectivizr.js"></script>
+    <![endif]-->
+
+    <!-- kevin -->
+    <script src="/js/kevin/keyword_trend_research_form_util.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            // Tooltips
+            $('[title]').tooltip();
+
+        });
+    </script>
+
+    <!-- Kevin's -->
+
+</head>
+<body>
+
+<!-- Full height wrapper -->
+<div id="wrapper">
+
+    <!-- Main page header -->
+    <header id="header" class="container" th:replace="header"></header>
+    <!-- /Main page header -->
+
+    <!-- Main page container -->
+    <section class="container" role="main">
+
+        <!-- Grid row -->
+        <div class="row">
+
+            <!-- Data block -->
+            <article class="col-sm-12">
+
+                <!-- 수집된 데이타가 있는경우 -->
+                <div th:if="${research_result.target_name != null}" class="blue data-block">
+                    <header>
+                        <h2 th:text="${research_result.target_name} + '키워드 추이'"></h2>
+                    </header>
+                    <section>
+                        <div id="demo-4" class="flot"></div>
+                    </section>
+                </div>
+
+
+                <!-- 없는경우 예외처리 -->
+                <div th:unless="${research_result.target_name != null}" class="blue data-block">
+                    <header>
+                        <h2 style="align-content: center">아직 수집된 데이타가 없습니다.</h2>
+                    </header>
+                    <section>
+
+                        <div>
+
+                            <span>아직 수집된 데이타가 없습니다. 관리자에게 문의하세요.</span>
+
+                        </div>
+
+                    </section>
+                </div>
+
+
+            </article>
+
+        </div>
+
+        <!-- Data block -->
+        <!-- Grid row -->
+        <div class="row" id="new_item_container" name="new_item_container">
+
+            <!-- Data block -->
+            <article class="col-sm-12">
+                <div class="gray data-block">
+                    <header>
+                        <h2><span class="elusive icon-plus"></span> 키워드 추이 수집 정보</h2>
+                        <!-- ul class="data-header-actions">
+                            <li class="demoTabs active"><a href="#horizontal" class="btn btn-alt">Horizontal</a></li>
+                            <li class="demoTabs"><a href="#vertical" class="btn btn-alt">Vertical</a></li>
+                        </ul -->
+                    </header>
+                    <section class="tab-content">
+
+                        <!-- Tab #horizontal -->
+                        <div class="tab-pane active" id="horizontal">
+
+                            <h4 style="color: darkred; margin-left: 10%"> * 해당 입력 값은 적용후 다음날부터 수집 개시 합니다.</h4><br><br>
+
+                            <form class="form-horizontal" role="form" method="post" id="new_item_form" name="new_item_form"
+                                  th:action="@{/group_admin/ss_group_shop_add}" onsubmit="$.makeJpaData ();" novalidate>
+
+
+
+                                <input type="hidden" id="idx" name="idx" value="">
+                                <input type="hidden" id="membershipSeq" name="membershipSeq" th:value="${param.target_seq}">
+
+                                <!-- 주제어 및 검색어 1 -->
+                                <div class="form-group">
+
+                                    <label for="keyword_group_1" class="col-sm-2 control-label">주제어 1</label>
+                                    <div class="col-sm-2">
+
+                                        <input type="url" class="form-control" id="keyword_group_1" name="keyword_group_1" placeholder="주제어 1 입력"
+                                               required data-validation-required-message="반드시 주제어 한가지 이상 입력해야 합니다.">
+                                        <p class="help-block"></p>
+
+                                    </div>
+
+                                    <label for="keywords_1" class="col-sm-2 control-label">검색어 1</label>
+                                    <div class="col-sm-4">
+                                        <input type="url" class="form-control" id="keywords_1" name="keywords_1" placeholder="주제어 1의 검색어를 컴마(,)로 구분하여 최대 20개까지 입력">
+                                    </div>
+
+                                </div>
+
+
+
+
+                                <!-- 주제어 및 검색어 2 -->
+                                <div class="form-group">
+
+                                    <label for="keyword_group_2" class="col-sm-2 control-label">주제어 2</label>
+                                    <div class="col-sm-2">
+
+                                        <input type="url" class="form-control" id="keyword_group_2" name="keyword_group_2" placeholder="주제어 2 입력">
+                                    </div>
+
+                                    <label for="keywords_2" class="col-sm-2 control-label">검색어 2</label>
+                                    <div class="col-sm-4">
+
+                                        <input type="url" class="form-control" id="keywords_2" name="keywords_2" placeholder="주제어 2의 검색어를 컴마(,)로 구분하여 최대 20개까지 입력">
+                                    </div>
+
+                                </div>
+
+
+
+
+                                <!-- 주제어 및 검색어 3 -->
+                                <div class="form-group">
+
+                                    <label for="keyword_group_3" class="col-sm-2 control-label">주제어 3</label>
+                                    <div class="col-sm-2">
+
+                                        <input type="url" class="form-control" id="keyword_group_3" name="keyword_group_3" placeholder="주제어 3 입력">
+                                    </div>
+
+                                    <label for="keywords_3" class="col-sm-2 control-label">검색어 3</label>
+                                    <div class="col-sm-4">
+                                        <input type="url" class="form-control" id="keywords_3" name="keywords_3" placeholder="주제어 3의 검색어를 컴마(,)로 구분하여 최대 20개까지 입력">
+                                    </div>
+
+                                </div>
+
+
+
+
+                                <!-- 주제어 및 검색어 4 -->
+                                <div class="form-group">
+
+                                    <label for="keyword_group_4" class="col-sm-2 control-label">주제어 4</label>
+                                    <div class="col-sm-2">
+
+                                        <input type="url" class="form-control" id="keyword_group_4" name="keyword_group_4" placeholder="주제어 4 입력">
+                                    </div>
+
+                                    <label for="keywords_4" class="col-sm-2 control-label">검색어 4</label>
+                                    <div class="col-sm-4">
+                                        <input type="url" class="form-control" id="keywords_4" name="keywords_4" placeholder="주제어 4의 검색어를 컴마(,)로 구분하여 최대 20개까지 입력">
+                                    </div>
+
+                                </div>
+
+
+
+
+                                <!-- 주제어 및 검색어 5 -->
+                                <div class="form-group">
+
+                                    <label for="keyword_group_5" class="col-sm-2 control-label">주제어 5</label>
+                                    <div class="col-sm-2">
+
+                                        <input type="url" class="form-control" id="keyword_group_5" name="keyword_group_5" placeholder="주제어 5 입력">
+                                    </div>
+
+                                    <label for="keywords_5" class="col-sm-2 control-label">검색어 5</label>
+                                    <div class="col-sm-4">
+                                        <input type="url" class="form-control" id="keywords_5" name="keywords_5" placeholder="주제어 5의 검색어를 컴마(,)로 구분하여 최대 20개까지 입력">
+                                    </div>
+
+                                </div>
+
+
+                                <!-- 누적기간 -->
+                                <div class="form-group">
+                                    <label for="rdo_period" class="col-sm-2 control-label">기간</label>
+                                    <div class="col-sm-3" id="rdo_period">
+                                        <div class="radio styled-radio" style="float: left;">
+                                            <label>
+                                                <input type="radio" name="period" id="period_2" data-label="1개월" value="1">
+                                            </label>
+                                        </div>
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="radio" name="period" id="period_3" data-label="3개월" value="2">
+                                            </label>
+                                        </div>
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="radio" name="period" id="period_4" data-label="1년" value="3">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- 단위 -->
+                                <div class="form-group">
+                                    <label for="timeUnit" class="col-sm-2 control-label">단위</label>
+                                    <div class="col-sm-3">
+                                        <select id="timeUnit" name="timeUnit" class="form-control">
+                                            <option value="date">일간</option>
+                                            <option value="week">주간</option>
+                                            <option value="month">월간</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+
+                                <!-- 수집 기기 범위 -->
+                                <div class="form-group">
+                                    <label for="rdo_devices" class="col-sm-2 control-label">기기별</label>
+                                    <div class="col-sm-3" id="rdo_devices">
+                                        <div class="radio styled-radio" style="float: left;">
+                                            <label>
+                                                <input type="radio" name="device" id="device_all" data-label="전체" value="all">
+                                            </label>
+                                        </div>
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="radio" name="device" id="device_pc" data-label="PC" value="pc">
+                                            </label>
+                                        </div>
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="radio" name="device" id="device_mobile" data-label="모바일" value="mo">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- 성별 -->
+                                <div class="form-group">
+                                    <label for="rdo_gender" class="col-sm-2 control-label">성별</label>
+                                    <div class="col-sm-3" id="rdo_gender">
+                                        <div class="radio styled-radio" style="float: left;">
+                                            <label>
+                                                <input type="radio" name="gender" id="gender_all" data-label="전체" value="all">
+                                            </label>
+                                        </div>
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="radio" name="gender" id="gender_f" data-label="여성" value="f">
+                                            </label>
+                                        </div>
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="radio" name="gender" id="gender_m" data-label="남성" value="m">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- 연령 -->
+                                <div class="form-group">
+                                    <label for="chk_age" class="col-sm-2 control-label">연령</label>
+                                    <div class="col-sm-8" id="chk_age">
+                                        <div class="radio styled-checkbox" style="float: left;">
+                                            <label>
+                                                <input type="checkbox" name="age_all" id="age_all" data-label="전체" onchange="$.checkAllAge (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_1" data-label="~12" onchange="$.checkAgeOptions (this.checked);"
+                                                       data-validation-minchecked-minchecked="1" data-validation-minchecked-message="한개이상의 연령대를 선택하셔야 합니다."
+                                                       data-validation-maxchecked-maxchecked="11">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_2" data-label="13~18" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_3" data-label="19~24" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_4" data-label="25~29" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_5" data-label="30~34" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_6" data-label="35~39" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_7" data-label="40~44" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_8" data-label="45~49" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_9" data-label="50~54" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_10" data-label="55~60" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+
+                                        <div class="radio styled-radio" style="float: left; margin-left: 30px;">
+                                            <label>
+                                                <input type="checkbox" name="ages" id="age_11" data-label="60~" onchange="$.checkAgeOptions (this.checked);">
+                                            </label>
+                                        </div>
+                                        <!-- 연령대 전달을 위한 히든 데이타 -->
+                                        <input type="hidden" name="ages_asset" id="ages_asset" value="">
+                                    </div>
+                                    <p class="help-block"></p>
+                                </div>
+
+                                <!-- 승인여부 -->
+                                <div class="form-group">
+                                    <label for="keyword_trend_crawling_stat" class="col-sm-2 control-label">승인여부</label>
+                                    <div class="col-sm-3">
+                                        <select id="keyword_trend_crawling_stat" name="keyword_trend_crawling_stat" class="form-control">
+                                            <option value="0">대기</option>
+                                            <option value="1">승인</option>
+                                            <option value="2">불가</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+
+                                <hr>
+
+                                <!-- 서브밋 / 취소 -->
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-lg btn-primary" id="submit_new_item" name="submit_new_item">등록</button>
+                                        <button type="button" class="btn btn-lg btn-default" onclick="history.back ();">취소</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /Tab #horizontal -->
+
+                    </section>
+                    <footer>
+                        <p></p>
+                    </footer>
+                </div>
+            </article>
+            <!-- /Data block -->
+
+        </div>
+        <!-- /Grid row -->
+
+    </section>
+    <!-- /Main page container -->
+
+
+
+</div>
+<!-- /Full height wrapper -->
+
+<!-- Main page footer -->
+<footer id="footer" th:replace="footer"></footer>
+<!-- /Main page footer -->
+
+<!-- Bootstrap scripts -->
+<script src="/js/bootstrap/bootstrap.min.js"></script>
+
+<!-- jQuery DataTable -->
+<script src="/js/plugins/dataTables/jquery.datatables.min.js"></script>
+
+<!-- Inputmask -->
+<script src="/js/plugins/inputmask/bootstrap-inputmask.js"></script>
+
+<!-- Button switch -->
+<script src="/js/plugins/bootstrapSwitch/bootstrapSwitch.js"></script>
+
+<!-- PrettyCheckable checkbox and radio -->
+<script src="/js/plugins/prettyCheckable/prettyCheckable.js"></script>
+<script>
+    $(document).ready(function() {
+
+        $('.styled-checkbox input, .styled-radio input').prettyCheckable();
+
+    });
+</script>
+
+<!-- Form validation -->
+<script src="/js/plugins/bootstrapValidation/jqBootstrapValidation.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+        $("#new_item_form input").jqBootstrapValidation({
+            submitSuccess: function($form, event) {
+                //event.preventDefault(); --> jpa 로 넘긴다.
+            }
+        });
+
+    });
+</script>
+
+<!-- 폼 디폴트 셋팅 -->
+<script th:if="${research_info.idx} > 0">
+
+    $(document).ready (function() {
+        $.showResearchInfoModifyForm (
+            '[[@{/group_admin/ss_kt_crawling_info_update(target_seq=${param.target_seq})}]]',
+            '[[${research_info.idx}]]',
+            '[[${research_info.keyword_group_1}]]',
+            '[[${research_info.keywords_1}]]',
+            '[[${research_info.keyword_group_2}]]',
+            '[[${research_info.keywords_2}]]',
+            '[[${research_info.keyword_group_3}]]',
+            '[[${research_info.keywords_3}]]',
+            '[[${research_info.keyword_group_4}]]',
+            '[[${research_info.keywords_4}]]',
+            '[[${research_info.keyword_group_5}]]',
+            '[[${research_info.keywords_5}]]',
+            '[[${research_info.period}]]',
+            '[[${research_info.timeUnit}]]',
+            '[[${research_info.device}]]',
+            '[[${research_info.gender}]]',
+            '[[${research_info.age}]]',
+            '[[${research_info.keyword_trend_crawling_stat}]]'
+        );
+    });
+
+</script>
+
+<!-- 폼 디폴트 셋팅 -->
+<script th:unless="${research_info.idx} > 0">
+
+    $(document).ready (function() {
+        $.addResearchInfoFormVisible ('[[@{/group_admin/ss_kt_crawling_info_add(target_seq=${param.target_seq})}]]');
+    });
+
+</script>
+
+
+
+<!-- jQuery Flot Charts -->
+<!--[if lte IE 8]>
+<script language="javascript" type="text/javascript" src="/js/plugins/flot/excanvas.min.js"></script>
+<![endif]-->
+
+
+<script src="/js/plugins/flot/jquery.flot.js"></script>
+<script src="/js/plugins/flot/jquery.flot.time.js"></script>
+
+
+<script th:if="${research_result.target_name != null}" th:inline="javascript" charset="utf-8">
+
+    $(document).ready(function() {
+
+        /**
+         //Demo #4 -- 데모데이타고 실제론 JPA에서 받아옴.
+         var data1 = [], data2 = [];
+         var start = 1325347200000;
+         for (var i = 0; i < 30; i += 1) {
+            data1.push(
+                [1357016400000 + (1000*60*60*24), (Math.random() * 80) + 20]
+            );
+
+            data2.push (
+                [1357016400000 + (1000*60*60*24), (Math.random() * 80) + 20]
+            )
+        }
+
+         datas = [];
+         datas.push ({ data: data1, label: " 클릭율"})
+         datas.push ({ data: data2, label: " 똥꼬율"})
+         */
+
+
+            //----------------------------------------------------------------------------------------------
+        var dataObj = /*[[${research_result.getChartData ()}]]*/; //JPA 에서 데이타 받아옴
+
+        /** 시작일 */
+        var startDate = new Date (dataObj.startDate);
+
+        var plot = $.plot($("#demo-4"),
+            dataObj.results, {
+                series: {
+                    lines: { show: true },
+                    points: { show: false }
+                },
+                grid: { hoverable: true, clickable: false, backgroundColor: 'transparent', borderColor: 'transparent' },
+                xaxis: {
+                    mode: "time",
+                    timeformat: '%Y-%m-%d'
+                },
+                yaxis: {
+                    min: 0,
+                    max: 120
+                }
+            });
+
+
+
+        function showTooltip(x, y, contents) {
+            $('<div id="tooltip"><div class="tooltip-inner">' + contents + '</div></div>').css( {
+                position: 'absolute',
+                display: 'none',
+                top: y + 10,
+                left: x + 10
+            }).appendTo("body").fadeIn(200);
+        }
+
+        var previousPoint = null;
+        $("#demo-4").bind("plothover", function (event, pos, item) {
+            $("#x").text(pos.x.toFixed(2));
+            $("#y").text(pos.y.toFixed(2));
+
+            if (item) {
+                if (previousPoint != item.dataIndex) {
+                    previousPoint = item.dataIndex;
+
+                    $("#tooltip").remove();
+                    var x = item.datapoint[0].toFixed(2),
+                        y = item.datapoint[1].toFixed(2);
+
+                    cDate = new Date();
+                    cDate.setTime(x);
+                    showTooltip(item.pageX, item.pageY, cDate.toLocaleDateString() + "<br>" + y);
+                }
+            } else {
+                $("#tooltip").remove();
+                previousPoint = null;
+            }
+        });
+
+    });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<header id="header" class="container" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+    <h1>
+        <!-- Main page logo -->
+        <a th:href="@{/}">Shopsmart</a>
+
+        <!-- Main page headline -->
+        <span>A flat Bootstrap admin template</span>
+    </h1>
+
+    <!-- User profile -->
+    <div class="user-profile">
+        <figure>
+
+            <!-- User profile avatar -->
+            <img alt="John Pixel avatar" src="http://placekitten.com/60/60">
+
+            <!-- User profile info -->
+            <figcaption>
+                <strong><a href="user-profile.html"><span sec:authentication="name"></span></a></strong>
+                <ul>
+                    <!-- li><a href="#" title="" data-original-title="Message inbox">inbox</a></li>
+                    <li><a href="#" title="" data-original-title="Account settings">settings</a></li -->
+                    <li><a th:href="@{/account/logout}" title="" data-original-title="Logout">logout</a></li>
+                </ul>
+            </figcaption>
+            <!-- /User profile info -->
+
+        </figure>
+    </div>
+    <!-- /User profile -->
+
+    <!-- Main navigation -->
+    <nav class="main-navigation navbar navbar-default" role="navigation">
+
+        <!-- Collapse navigation for mobile -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".main-navigation-collapse">
+                <span class="elusive icon-home"></span>  Home
+            </button>
+        </div>
+        <!-- /Collapse navigation for mobile -->
+
+        <!-- Navigation -->
+        <div class="main-navigation-collapse collapse navbar-collapse">
+
+            <!-- Navigation items -->
+            <ul class="nav navbar-nav">
+
+                <!-- Active navigation items -->
+                <li>
+                    <a th:href="@{/}"><span class="elusive icon-home"></span></a>
+                </li>
+
+                <li class="active">
+                    <a th:href="${active_nav_link}"><span th:class="${active_nav_icon}"></span> <span th:text="${active_nav_label}"></span> </a>
+                </li>
+                <!-- /Active navigation items -->
+
+
+                <!-- Dropdown navigation items -->
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="elusive icon-person"></span> SU-관리 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <!-- li><a th:href="@{/account/signup}"><span class="elusive icon-group"></span> 관리자 등록</a></li -->
+                        <li><a th:href="@{/account/account_admin}"><span class="elusive icon-person"></span> 관리자 목록</a></li>
+                    </ul>
+                </li>
+                <!-- /Dropdown navigation items -->
+
+                <!-- Dropdown navigation items -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="elusive icon-group"></span> 업체 그룹 관리 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/group_admin/ss_group_shop_admin}"><span class="elusive icon-group"></span> 그룹웨어 업체 관리</a></li>
+                        <li><a th:href="@{/group_admin/ss_group_vendor_admin}"><span class="elusive icon-group"></span> 도매 업체 관리</a></li>
+                        <li><a th:href="@{/group_admin/ss_group_buyer_admin}"><span class="elusive icon-group"></span> 사입 업체 관리</a></li>
+                    </ul>
+                </li>
+                <!-- /Dropdown navigation items -->
+
+                <!-- Dropdown navigation items -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="elusive icon-graph"></span> 리서치 관리 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/research_admin/ss_research_info}"><span class="elusive icon-graph"></span> 리서치 정보 관리</a></li>
+                        <li><a th:href="@{/research_admin/ss_np_crawling_result}"><span class="elusive icon-graph"></span> 신상 리서치 결과</a></li>
+                        <li><a th:href="@{/research_admin/ss_event_crawling_result}"><span class="elusive icon-graph"></span> 이벤트 리서치 결과</a></li>
+                    </ul>
+                </li>
+                <!-- /Dropdown navigation items -->
+
+            </ul>
+
+
+
+            <!-- Navigation form -->
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Type here to search&hellip;">
+                </div>
+                <button type="submit" class="btn btn-default"><span class="elusive icon-search"></span></button>
+            </form>
+            <!-- /Navigation form -->
+
+        </div>
+        <!-- /Navigation -->
+
+    </nav>
+    <!-- /Main navigation -->
+
+</header>
